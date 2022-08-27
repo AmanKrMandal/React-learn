@@ -408,20 +408,352 @@ class Student extends React.Component{
 }
 export default Student
 
+/==================== useEffect =================================================================================
+  
+  import './App.css';
+import React, { useEffect, useState } from 'react'
+function App() {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    console.warn("use effect")
+  })
+  return (
+    <div className="App">
+      <h1>useEffect in React {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Update Counter</button>
+    </div>
+  );
+}
+export default App;
 
- 
+/======================== Child to Parent =================================================
+
+import React from 'react'
+import './App.css';
+import User from './User'
+function App() {
+  function getName(name)
+  {
+    alert(name)
+  }
+  return (
+    <div className="App">
+      <h1>Lifting State Up</h1>
+      <User getData={getName} />
+    </div>
+  );
+}
+export default App;
+
+//User.js-------------------
+
+ function User(props)
+{
+    const name="Anil Sidhu"
+    return(
+        <div>
+            <h1>User Name is : </h1>
+            <button onClick={()=>props.getData(name)} >Click Me</button>
+        </div>
+    )
+}
+
+export default User;
+
+/=================== Pure component ===========================================================
+
+//App.js --------------------
+
+import './App.css';
+import React from 'react'
+import Counter from './Counter'
+class  App extends React.Component {
+  constructor()
+  {
+    super();
+    this.state={
+      count:1
+    }
+  }
+ render()
+ {
+  return (
+    <div className="App">
+     <Counter count={this.state.count} />
+      <button 
+      onClick={()=>{this.setState({count:this.state.count+1})}}
+      >Update Count</button>
+    </div>
+  );
+ }
+}
+export default App;
+
+//Counter.js-----------------------
+
+import React from 'react'
+class Counter extends React.PureComponent{
+    render()
+    {
+        console.warn("counter re-render")
+        return(
+            <div>
+                <h1>Counter Component {this.props.count}</h1>
+            </div>
+        )
+    }
+}
+export default Counter
 
 
+/================== useMemo ======================================================================
+  
+  import './App.css';
+import React, { useState } from 'react'
+function App() {
+  const [count, setData] = useState(1)
+  const [item, setItem] = useState(20)
+
+  const newApple=React.useMemo(
+    function appleTime() {
+      console.warn("Hello")
+      return 100 * count;
+    }
+  ,[item])
+  return (
+    <div className="App">
+      <h1>Hooks in React {count}</h1>
+      {newApple}
+      <button onClick={() => setData(count + 1)}>Update State</button>
+      <button onClick={() => setItem(item * 10)}>Update State</button>
+
+    </div>
+  );
+}
+export default App;
+
+/====================== Ref ===============================================
+
+import './App.css';
+import React,{createRef} from 'react'
+class App extends React.Component {
+  constructor()
+  {
+    super();
+    this.inputRef=createRef();
+  }
+  componentDidMount()
+  {
+    // console.warn(this.inputRef.current.value="1000")
+  }
+  getVal()
+  {
+    console.warn(this.inputRef.current.value)
+    this.inputRef.current.style.color="red"
+    this.inputRef.current.style.backgroundColor="black"
+
+  }
+  render() {
+    return (
+      <div className="App">
+        <h1>Ref in React </h1>
+        <input type="text" ref={this.inputRef}  />
+        <button onClick={()=>this.getVal()}>Check Ref</button>
+      </div>
+    );
+  }
+}
+export default App;
+
+/======================= useRef =========================================================
+
+import './App.css';
+import React,{useRef} from 'react'
+function App() {
+  let inputRef=useRef(null);
+  function controlInput()
+  {
+  //  inputRef.current.value="abc"
+  // inputRef.current.style.display="none"
+  inputRef.current.focus()
+  }
+  return (
+    <div className="App">
+      <h1>useRef in React </h1>
+      <input type="text" ref={inputRef} />
+      <button onClick={controlInput}>Handle Input</button>
+    </div>
+  );
+
+}
+export default App;
+
+/================== forwardRef  ================================================================
+
+//App.js
+
+import './App.css';
+import React ,{useRef} from 'react'
+import User from './User'
+function App() {
+  let inputRef=useRef(null)
+  function updateInput()
+  {
+    inputRef.current.value="1000";
+    inputRef.current.style.color="red"
+    inputRef.current.focus()
+  }
+  return (
+    <div className="App">
+      <h1>forwardRef in React </h1>
+      <User ref={inputRef} />
+      <button onClick={updateInput} >Update Input Box</button>
+    </div>
+  );
+
+}
+export default App;
+
+//User.js
+
+import React,{forwardRef} from 'react'
+function User(props,ref)
+{
+    return(
+        <div>
+            <input ref={ref} type="text" />
+        </div>
+    )
+}
+
+export default forwardRef(User);
+
+/================== Controlled Component ======================================================
+
+import './App.css';
+import React,{useState} from 'react'
+function App() {
+  const [val,setVal]=useState("")
+
+   return (
+    <div className="App">
+      <h1>Controlled Component </h1>
+      <input type="text" value={val} onChange={(e)=>setVal(e.target.value)} />
+   <h1>{val}</h1>
+    </div>
+  );
+}
+export default  App;
+
+/=============================== Uncontrolled Component ===================================================
+
+import './App.css';
+import React, { useRef } from 'react'
+function App() {
+  let inputRef = useRef(null)
+  let inputRef2 = useRef(null)
+
+  function submitForm(e) {
+    e.preventDefault()
+    console.warn("input field 1 value : ", inputRef.current.value)
+    console.warn("input field 2 value : ", inputRef2.current.value)
+    let input3 = document.getElementById('input3').value
+    console.warn("input field 3 value : ", input3)
 
 
+  }
+  return (
+    <div className="App">
+      <h1>Uncontrolled Component </h1>
+      <form onSubmit={submitForm} >
+        <input ref={inputRef} type="text" /> <br /> <br />
+        <input ref={inputRef2} type="text" /> <br /> <br />
+        <input id="input3" type="text" /> <br /> <br />
+
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+}
+export default App;
 
 
+/============================ Hight order component (HOC) ==========================================
+
+import './App.css';
+import React, { useRef, useState } from 'react'
+function App() {
+  return (
+    <div className="App">
+      <h1>HOC </h1>
+      <HOCRed cmp={Counter} />
+      <HOCGreen cmp={Counter} />
+      <HOCBlue cmp={Counter} />
+
+    </div>
+  );
+}
+
+function HOCRed(props)
+{
+  return <h2 style={{backgroundColor:'red',width:100}}>Red<props.cmp /></h2>
+}
+function HOCGreen(props)
+{
+  return <h2 style={{backgroundColor:'green',width:100}}>Grren<props.cmp /></h2>
+}
+function HOCBlue(props)
+{
+  return <h2 style={{backgroundColor:'blue',width:100}}>blue <props.cmp /></h2>
+}
+
+function Counter()
+{
+  const [count,setCount]=useState(0)
+  return<div>
+    <h3>{count}</h3>
+    <button onClick={()=>setCount(count+1)}>Update</button>
+  </div>
+}
+export default App;
 
 
+/========================== Routing ===================================================================
 
+import './App.css';
+import React from 'react'
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Link to="/home" >Home</Link>
+        <br></br>
+        <Link to="/about" >About</Link>
+        <Route path="/home" > <Home /></Route>
+        <Route path="/about" > <About /></Route>
+      </Router>
+    </div>
+  );
+}
 
-
-
+function Home() {
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <p>This is my Home Page</p>
+    </div>
+  )
+}
+function About() {
+  return (
+    <div>
+      <h1>About Page</h1>
+      <p>This is my About Page</p>
+    </div>
+  )
+}
+export default App;
 
 
 
