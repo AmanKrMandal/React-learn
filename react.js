@@ -189,49 +189,224 @@ const [print,setPrint]=useState(false)
 export default App;
 
 
-/================== Form ==========================================
+/===================== Conditional rendering | If Condition ===============================================
+
+//App.js
 
 import logo from './logo.svg';
 import './App.css';
-import {useState} from 'react'
+import Profile from './Profile'
 function App() {
-  const [name,setName]=useState("");
-  const [tnc,setTnc]=useState(false);
-  const [interest,setInterest]=useState("");
-  function getFormData(e)
-  {
-    console.warn(name,tnc,interest)
-    e.preventDefault()
-  }
   return (
     <div className="App">
-     <h1>Handle Form in React</h1>
-    
-     <form onSubmit={getFormData}>
-       <input type="text" placeholder="enter name" value={name} onChange={(e)=>setName(e.target.value)} /> <br /><br />
-       <select onChange={(e)=>setInterest(e.target.value)}>
-         <option>Select Options</option>
-         <option>Marvel</option>
-         <option>DC</option>
-       </select> <br /><br />
-       <input type="checkbox"  onChange={(e)=>setTnc(e.target.checked)} /><span>Accept Terms and conditions</span>
-       <br /><br />
-       <button type="submit">Submit</button>
-       <button>Clear</button>
-     </form>
+    <Profile />
+    </div>
+  );
+}
 
+export default App;
+
+//Profile.js
+
+import { useState } from 'react'
+function Profile() {
+    const [loggedIn, setLoggedIn] = useState(3)
+    return (
+        <div>
+           ? {loggedIn==1?
+            <h1>Welcome User 1</h1>
+            :loggedIn==2?<h1>Welcome User2</h1>
+            :<h1>Welcome User3</h1>}
+        </div>
+    )
+}
+export default Profile;
+
+
+/====================== Basic Form validation ============================
+
+//App.js
+
+import './App.css';
+import Login from './Login'
+function App() {
+  const data = true;
+  return (
+    <div className="App">
+     <Login />
     </div>
   );
 }
 export default App;
 
+//Login.js
+
+import React, { useState } from 'react'
+function Login() {
+    const [user,setUser]=useState("");
+    const [password,setPassword]=useState("");
+    const [userErr,setUserErr]=useState(false);
+    const [passErr,setPassErr]=useState(false);
+
+  function loginHandle(e)
+    {
+        if(user.length<3 || password.length<3)
+        {
+            alert("type correct values")
+        }
+        else
+        {
+            alert("all good :)")
+        }
+
+        e.preventDefault()
+    }
+    function userHandler(e){
+        let item=e.target.value;
+        if(item.length<3 )
+        {
+           setUserErr(true)
+        }
+        else
+        {
+            setUserErr(false)
+        }
+        setUser(item)
+    }
+    function passwordHandler(e){
+        let item=e.target.value;
+        if(item.length<3 )
+        {
+           setPassErr(true)
+        }
+        else
+        {
+            setPassErr(false)
+        }
+        setPassword(item)
+
+    }
+    return (
+        <div>
+            <h1>Login</h1>
+           <form onSubmit={loginHandle}>
+           <input type="text" placeholder="Enter User Id" onChange={userHandler} />{userErr?<span>User Not Valid</span>:""}
+            <br /> <br />
+            <input type="password" placeholder="Enter User Password" onChange={passwordHandler}/>{passErr?<span>Password Not Valid</span>:""}
+            <br /> <br />
+            <button type="submit"  >Login</button>
+           </form>
+        </div>
+    )
+}
+export default Login;
 
 
+/===========================  componentDidMount ============================================
+
+import './App.css';
+import React from 'react'
+class App extends React.Component {
+  constructor()
+  {
+    super();
+    console.warn("constructor")
+    this.state={name:"anil"}
+  }
+  componentDidMount()
+  {
+    console.warn("componentDidMount")
+  }
+  render()
+  {
+    console.warn("render")
+
+    return (
+      <div className="App">
+        <h1>Component Did Mount {this.state.name}</h1>
+        <button onClick={()=>this.setState({name:"Sidhu"})}>Update</button>
+      </div>
+    );
+  }
+}
+export default App;
 
 
+/=================== componentDidUpdate ==============================
 
 
+import './App.css';
+import React from 'react'
+class App extends React.Component {
+  constructor()
+  {
+    super();
+    console.warn("constructor")
+    this.state={name:"anil"}
+  }
+  componentDidUpdate()
+  {
+    console.warn("componentDidUpdate")
+  }
+  render()
+  {
+    console.warn("render")
 
+    return (
+      <div className="App">
+        <h1>Component Did Mount {this.state.name}</h1>
+        <button onClick={()=>this.setState({name:"Sidhu"})}>Update</button>
+      </div>
+    );
+  }
+}
+export default App;
+
+
+/=========================== componentWillUnmount  ======================================
+
+//App.js-------------
+
+import './App.css';
+import React from 'react'
+import Student from './Student'
+class App extends React.Component {
+  constructor()
+  {
+    super();
+    this.state={
+      show:true
+    }
+  }
+  render() {
+    return (
+      <div className="App">
+        {
+          this.state.show?<Student />
+          :<h4>Component is removed</h4>
+        }
+        <button onClick={()=>this.setState({show:false})}> Toogle Student Component</button>
+      </div>
+    )
+  }
+}
+export default App;
+
+//Student.js--------------------
+
+import React from 'react'
+class Student extends React.Component{
+
+    componentWillUnmount()
+    {
+        alert("componentWillUnmount is called")
+    }
+    render()
+    {
+        return<h1>Student Component</h1>
+    }
+}
+export default Student
 
 
 
