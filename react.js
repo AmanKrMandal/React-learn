@@ -722,16 +722,19 @@ export default App;
 
 import './App.css';
 import React from 'react'
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Link, Route , Switch} from 'react-router-dom'
 function App() {
   return (
     <div className="App">
       <Router>
-        <Link to="/home" >Home</Link>
+        <Link to="/" >Home</Link>
         <br></br>
         <Link to="/about" >About</Link>
-        <Route path="/home" > <Home /></Route>
+    <Switch >
+        <Route path="/" exact={true} > <Home /></Route>
         <Route path="/about" > <About /></Route>
+        <Route path="*" > <Page /></Route>
+    </Switch >
       </Router>
     </div>
   );
@@ -753,7 +756,65 @@ function About() {
     </div>
   )
 }
+
+function Page() {
+  return (
+    <div>
+      <h1>404 page</h1>
+      <p> Page not found</p>
+    </div>
+  )
+}
 export default App;
+
+/====================== Dynamic Routing =========================================================
+
+//App.js------------------
+
+import './App.css';
+import React from 'react'
+import {BrowserRouter as Router,Link,Route} from 'react-router-dom'
+import User from './User'
+function App() {
+  let user=[
+    {name:'anil',id:1},
+    {name:'peter',id:2},
+    {name:'bruce',id:3},
+    {name:'tony',id:4},
+  ]
+  return (
+    <div className="App">
+      <Router>
+      <h1>React Dynamic Routing</h1>
+      {
+        user.map((item)=>
+      <div><Link to={"/user/"+item.id+"/"+item.name}>{item.name}</Link></div>)
+      }
+      <Route path="/user/:id/:name" ><User /></Route>
+      </Router>
+    </div>
+  );
+}
+export default App;
+
+//User.js-------------------------
+
+import {withRouter} from 'react-router-dom'
+function User(props)
+{
+    console.warn(props)
+    return(
+    <div><h1>User No {props.match.params.id}</h1>
+    <h1>User Name {props.match.params.name}</h1></div>
+
+    )
+}
+
+export default withRouter(User);
+
+
+
+
 
 
 
