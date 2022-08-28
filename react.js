@@ -815,6 +815,7 @@ export default withRouter(User);
 
 /========================= async await API ====================================================================
 
+ const [users, setUsers] = useState([]);
 
     const getUsers = async () => {
         try {
@@ -830,6 +831,24 @@ export default withRouter(User);
     useEffect(() => {
         getUsers();
     }, []);
+
+return(
+<div>
+  -------------
+  {
+  users.map((item) =>{
+      return (
+           <div>
+           //write here
+           </div>
+         )
+     })
+  }
+  ---------------
+</div>
+)
+
+
 
 
 
