@@ -813,6 +813,23 @@ function User(props)
 export default withRouter(User);
 
 
+/========================= async await API ====================================================================
+
+
+    const getUsers = async () => {
+        try {
+            const response = await fetch('https://api.github.com/users');
+             setLoading(false);
+            setUsers(await response.json());
+        } catch (error) {
+            setLoading(false);
+            console.log("my error is "+ error);
+        }
+    }
+
+    useEffect(() => {
+        getUsers();
+    }, []);
 
 
 
