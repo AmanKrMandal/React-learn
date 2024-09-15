@@ -23,14 +23,10 @@ function App() {
     };
   }, [isIntervalRunning]);
 
-  const handleToggle = () => {
-    setIsIntervalRunning(!isIntervalRunning);
-  };
-
   return (
     <div>
       {isIntervalRunning && <h2>{time.toLocaleTimeString()}</h2>}
-      <button onClick={handleToggle}>
+      <button onClick={() => setIsIntervalRunning(!isIntervalRunning)}>
         {isIntervalRunning ? 'Stop' : 'Start'} Interval
       </button>
     </div>
