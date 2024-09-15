@@ -1,21 +1,4 @@
-  import './App.css';
-import React, { useEffect, useState } from 'react'
-function App() {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.warn("use effect")
-  })
-  return (
-    <div className="App">
-      <h1>useEffect in React {count}</h1>
-      <button onClick={() => setCount(count + 1)}>Update Counter</button>
-    </div>
-  );
-}
-export default App;
 
-
-// willUnmount--------------------
 
 import React, { useState, useEffect } from 'react';
 
@@ -24,18 +7,19 @@ function App() {
   const [isIntervalRunning, setIsIntervalRunning] = useState(true);
 
   useEffect(() => {
+    console.log("initial");
     let interval;
 
     if (isIntervalRunning) {
       interval = setInterval(() => {
         setTime(new Date());
-        console.log("time is updated");
+        console.log("Update");
       }, 1000);
     }
 
     return () => {
       clearInterval(interval);
-      console.log("interval is cleared");
+      console.log("Unmount");
     };
   }, [isIntervalRunning]);
 
